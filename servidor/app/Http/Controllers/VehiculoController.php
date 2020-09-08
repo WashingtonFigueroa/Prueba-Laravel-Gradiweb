@@ -7,79 +7,31 @@ use Illuminate\Http\Request;
 
 class VehiculoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $vehiculos = vehiculo::all();
+        return response()->json($vehiculos, 200);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function show($id){
+        return response()->json(vehiculo::find($id), 200);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(){
+        $vehiculo = vehiculo::create(request()->all());
+        return response()->json($vehiculo, 201);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\vehiculo  $vehiculo
-     * @return \Illuminate\Http\Response
-     */
-    public function show(vehiculo $vehiculo)
-    {
-        //
+    public function update($id){
+        $vehiculo = vehiculo::find($id);
+        $vehiculo->update(request()->all());
+        return response()->json($vehiculo, 200);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\vehiculo  $vehiculo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(vehiculo $vehiculo)
-    {
-        //
+    public function destroy($id){
+        $vehiculo = vehiculo::find($id);
+        $vehiculo->delete();
+        return response()->json(['exito'=>'Vehiculo eliminado exitosamente con id: ' . $vehiculo->id], 200);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\vehiculo  $vehiculo
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, vehiculo $vehiculo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\vehiculo  $vehiculo
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(vehiculo $vehiculo)
-    {
-        //
+    public function search(){
+        $value = request()->input('value');
+        $Marca = vehiculo::where('marca', 'like', '%'.$value.'%')
+            ->orWhere('placa', 'like', '%'.$value. '%')->get();
+        return response()->json($Marca, 201);
     }
 }

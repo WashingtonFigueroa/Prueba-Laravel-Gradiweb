@@ -17,10 +17,15 @@ class vehiculo extends Model
     ];
     protected $dates = ['deleted_at'];
 
-    protected $appends = ['propietario'];
+    protected $appends = ['propietario','tipo_vehiculo'];
 
     public function getPropietarioAttribute()
     {
         return propietario::find($this->propietario_id);
     }
+    public function getTipoVehiculoAttribute()
+    {
+        return tipo_vehiculo::find($this->tipo_vehiculo_id);
+    }
+
 }
